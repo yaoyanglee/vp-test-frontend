@@ -1,0 +1,28 @@
+<div class="
+transition-all
+h-full
+flex flex-col justify-start items-stretch
+gap-y-6
+bg-syn-navy
+gutter-y
+relative
+">
+  <div class="transition-all sticky top-12">
+    <ng-content></ng-content>
+    <div tabindex="0" (click)="toggleExpand()"
+    class="
+    transition-colors
+    translate
+    absolute -top-10 {{isExpand?'right-2 ml-0 translate-x-0':'ml-[50%] -translate-x-1/2'}}
+    text-syn-lilac text-opacity-30
+    rounded w-6 h-6
+    flex flex-col justify-center items-center
+    focus:bg-syn-lilac focus:bg-opacity-10
+    md:hover:bg-syn-lilac md:hover:bg-opacity-10
+    ">
+      <div class="transition-all {{isExpand?'':'-rotate-180'}}">
+        <span style="font-size: 16px" nz-icon nzType="double-left" nzTheme="outline" class="aspect-square"></span>
+      </div>
+    </div>
+  </div>
+</div>

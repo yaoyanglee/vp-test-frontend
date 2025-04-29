@@ -1,0 +1,23 @@
+<div class="mt-4 w-full h-full">
+  <div appPaper class="
+  bg-white
+  p-[24px]
+  transform
+  flex flex-col justify-start items-stretch
+  gap-2
+  overflow-hidden
+  {{portrait?'w-[595.28px] h-[841.89px]':'w-[841.89px] h-[595.28px]'}}
+  ">
+
+    <!--  Needs to have scroll to allow JS to check if scroll exists-->
+    <ng-container>
+      <div #PaperContainer class="max-h-full overflow-y-auto">
+        <ng-content />
+      </div>
+    </ng-container>
+  </div>
+
+</div>
+
+
+<!--{{portrait?'w-[1184.56px] h-[1683.78px]':'w-[1683.78px] h-[1184.56px]'}}-->

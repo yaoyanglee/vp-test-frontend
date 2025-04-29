@@ -1,0 +1,67 @@
+<nz-modal
+[(nzVisible)]="modalIsVisible"
+[nzCentered]="true"
+(nzOnOk)="closeModal()"
+(nzOnCancel)="closeModal()"
+[nzClosable]="false"
+[nzFooter]="null"
+nzWidth="95dvw"
+>
+  <ng-container *nzModalContent>
+    <div class="
+    w-full h-[90dvh]
+    overflow-hidden
+    flex flex-col justify-start items-stretch
+    gap-4
+    relative
+    ">
+
+<!--      Preview viewport-->
+      <div class="overflow-y-scroll w-full rounded-sm shadow-inner border border-solid border-gray-400">
+        <div class="
+        bg-gray-400 p-4 pt-0 min-h-full
+        flex flex-col justify-start items-center preview-viewport
+        ">
+          <page-information appPaper [patient]="patient" />
+          <page-pillbox appPaper [patientData]="patient.summary" />
+          <page-summary appPaper [patientData]="patient.summary" />
+        </div>
+      </div>
+
+<!--      Control bar-->
+      <div class="
+      sticky top-0
+      min-w-[30ch]
+      flex flex-row justify-between items-center
+      ">
+
+<!--        Left control group-->
+        <div class="flex flex-row justify-start items-center gap-2">
+          <nz-input-group nzAddOnBefore="Icon">
+            <nz-select [(ngModel)]="pillboxIconMode" (ngModelChange)="pillboxModeOnChange($event)" class="w-[20ch]">
+              <nz-option nzLabel="Default" [nzValue]="PillboxIconMode.ICON_DEFAULT" />
+              <nz-option nzLabel="Labeled icon (Tablets)" [nzValue]="PillboxIconMode.ICON_LABELED" />
+<!--              <nz-option nzLabel="Checkbox" [nzValue]="PillboxIconMode.CHECKBOX" />-->
+            </nz-select>
+          </nz-input-group>
+        </div>
+
+
+<!--        Right Button components-->
+        <div class="flex flex-row justify-end items-center gap-2">
+          <div class="zoom-controls-container">
+            <div class="zoom-controls">
+              <button (click)="zoomOut()" nz-icon nzType="minus">-</button>
+              <span>{{ zoomLevel }}%</span>
+              <button (click)="zoomIn()" nz-icon nzType="plus">+</button>
+            </div>
+          </div>
+          <app-source-button [patientId]="patient.id"></app-source-button>
+          <button (click)="edit()" nz-button nzType="default">Edit</button>
+          <button (click)="download()" [nzLoading]="isLoading" [disabled]="isPrintLoading" class="{{isLoading?'cursor-wait':''}}" nz-button nzType="default">Download</button>
+          <button (click)="print()" [nzLoading]="isPrintLoading" [disabled]="isLoading" class="{{isPrintLoading?'cursor-wait':''}}" nz-button nzType="primary">Print</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,120 @@
+<div class="
+content-container
+section-container
+flex flex-col justify-start items-center
+gap-y-6
+">
+
+<!--  Select card-->
+  <nz-card nzTitle="Input" class="max-w-prose w-full">
+      <nz-card-tab>
+        <nz-tabset nzSize="default" [nzAnimated]="false" [(nzSelectedIndex)]="inputIndex">
+          <nz-tab nzTitle="From identifier"></nz-tab>
+          <nz-tab nzTitle="From image"></nz-tab>
+        </nz-tabset>
+      </nz-card-tab>
+    <div class="w-full flex flex-col justify-start items-stretch gap-y-2">
+      <ng-container *ngIf="inputIndex===0">
+        <nz-input-group nzAddOnBefore="ID">
+          <nz-select nzAllowClear nzShowSearch [(ngModel)]="selectedId" nzPlaceHolder="Select" class="w-full">
+            <nz-option *ngFor="let id of inputSelectOptions" [nzLabel]="id" [nzValue]="id"></nz-option>
+          </nz-select>
+        </nz-input-group>
+      </ng-container>
+      <ng-container *ngIf="inputIndex===1">
+        <nz-input-group>
+          <nz-upload
+          nzType="drag"
+          [nzBeforeUpload]="fileUpload"
+          [nzRemove]="fileDelete"
+          [nzShowButton]="uploadedImage.length<1"
+          [nzLimit]="1"
+          [nzDisabled]="uploadedImage.length>=1"
+          [nzMultiple]="false"
+          nzAccept="image/jpg, image/png"
+          [(nzFileList)]="uploadedImage">
+            <div class="flex flex-col justify-center items-center text-gray-900 opacity-70">
+              <span nz-icon nzType="plus" nzTheme="outline"></span>
+              <span>Upload image</span>
+            </div>
+          </nz-upload>
+        </nz-input-group>
+      </ng-container>
+      <button nz-button nzType="primary" class="w-full" (click)="generate()">Generate</button>
+      <button nz-button nzType="default" class="w-full" (click)="clear()">Clear</button>
+    </div>
+  </nz-card>
+
+<!--  Medication (summary) card-->
+  <nz-card nzTitle="Medication" [nzExtra]="medExpandButton" class="w-full [&>div.ant-card-body]:px-0">
+
+<!--    Tabs-->
+    <nz-card-tab>
+      <nz-tabset nzSize="default" [nzAnimated]="false" [(nzSelectedIndex)]="medIndex">
+        <nz-tab nzTitle="Drugs"></nz-tab>
+        <nz-tab nzTitle="Summary"></nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+
+<!--    Card expand toggle button-->
+    <ng-template #medExpandButton>
+      <button nz-button nzType="link" (click)="toggleExpandMed()">{{ medIsExpand?"Collapse":"Expand" }} summary</button>
+    </ng-template>
+<!--bg-gradient-to-t from-white to-transparent bg-opacity-50-->
+<!--    Container to collapse and expand-->
+    <div class="relative">
+      <div *ngIf="!medIsExpand && medIndex===1 && summary" class="
+      absolute
+      z-50 w-full h-[25dvh]
+      bg-gradient-to-t from-white to-transparent bg-opacity-50
+      flex flex-col justify-end items-center
+      ">
+        <button nz-button (click)="toggleExpandMed()" nzType="dashed">
+          <span nz-icon nzType="arrow-down" nzTheme="outline"></span>
+          <span>Expand</span>
+        </button>
+      </div>
+      <ng-container *ngIf="medIndex===0">
+        <nz-empty *ngIf="drugList.length===0 && !loadingDrugList" [nzNotFoundContent]="null"></nz-empty>
+        <nz-skeleton *ngIf="drugList.length===0 && loadingDrugList" [nzActive]="true"></nz-skeleton>
+
+        <div *ngIf="drugList && !loadingDrugList" class="flex flex-col justify-start items-stretch gap-y-2 px-[24px]">
+          <ng-container *ngFor="let drug of drugList">
+            <nz-card nzSize="small" class="bg-blue-50 bg-opacity-30">{{ drug }}</nz-card>
+          </ng-container>
+        </div>
+      </ng-container>
+      <div class="{{medIsExpand && medIndex===1?'':'max-h-[25dvh]'}} {{!summary?'px-[24px]':''}} overflow-hidden" *ngIf="medIndex===1">
+        <nz-empty *ngIf="!summary && !loadingSummary" [nzNotFoundContent]="null"></nz-empty>
+        <nz-skeleton *ngIf="!summary && loadingSummary" [nzActive]="true"></nz-skeleton>
+        <div *ngIf="summary && !loadingSummary" class="flex flex-row justify-start items-start gap-4 overflow-x-auto pb-6-mx-[24px] px-[24px]">
+          <nz-card *ngFor="let drug of summary.results" nzSize="small" class="mb-4 bg-blue-50 bg-opacity-30 text-gray-900 w-full max-w-prose shrink-0">
+            <span class="font-medium text-2xl mb-6">{{ drug.drug_name }}</span>
+            <ng-container *ngFor="let key of Object.keys(drug)">
+              <div *ngIf="key!=='drug_name'" class="mt-4">
+                <span class="first-letter:capitalise font-medium text-lg">{{ key }}</span>
+                <p>{{ drug[key] }}</p>
+              </div>
+            </ng-container>
+          </nz-card>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+
+
+<!--  Pillbox-->
+  <ng-container *ngIf="false">
+    <nz-divider></nz-divider>
+    <div *ngIf="loadingSummary && !summary" class="w-full">
+      <nz-spin nzSize="large"></nz-spin>
+    </div>
+    <div *ngIf="data && summary" class="w-full">
+      <app-pillbox-tab-component [data]="data"></app-pillbox-tab-component>
+    </div>
+  </ng-container>
+
+
+
+
+</div>

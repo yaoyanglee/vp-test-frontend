@@ -1,0 +1,15 @@
+<div class="
+flex flex-row justify-start items-stretch flex-grow
+w-full max-w-screen navy
+[&>*:last-child]:flex-grow
+">
+  <app-sidebar>
+    <sidebar-v2-link routerLink="/demo/v2/">
+      <span nz-icon nzType="appstore" nzTheme="outline" sidebar-icon></span>
+      <span>Dashboard</span>
+    </sidebar-v2-link>
+  </app-sidebar>
+  <div class="flex-grow border-0 border-t border-t-syn-lilac border-solid">
+    <router-outlet></router-outlet>
+  </div>
+</div>

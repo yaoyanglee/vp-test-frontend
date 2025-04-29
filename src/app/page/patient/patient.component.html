@@ -1,0 +1,196 @@
+
+
+<!-- MODAL COMPONENT FOR PREVIEW-->
+<app-verify-modal />
+
+
+
+<!-- Header top banner-->
+<!-- Displays highest importance information and action buttons-->
+<div class="
+gutter-x mt-6 pt-4 pb-4
+flex flex-row justify-between items-center
+border-0 border-b border-solid border-syn-lilac
+sticky top-0 bg-white z-50
+">
+    <nz-page-header-title>{{patientID}}</nz-page-header-title>
+    <div class="flex flex-row justify-end items-center gap-2">
+      <app-source-button [patientId]="patientID"></app-source-button>
+      <button nz-button (click)="previewPatient()" nzType="primary" class="">
+        View
+      </button>
+    </div>
+</div>
+
+<!-- Table information about patient-->
+<!-- Secondary information-->
+<div class="
+w-full
+gutter-x gutter-y pb-4
+border-0 border-b border-solid border-syn-lilac
+flex flex-row justify-start items-start
+">
+  <!--  Left side (2x_ grid)-->
+  <div class="grid grid-cols-2 w-full max-w-prose">
+    <app-label-text label="Patient Name">
+      -
+    </app-label-text>
+    <app-label-text label="Patient Identifier">
+      {{patientID}}
+    </app-label-text>
+    <app-label-text label="Gender">
+      -
+    </app-label-text>
+    <app-label-text label="NRIC / FIN">
+      -
+    </app-label-text>
+    <app-label-text label="Date of Birth">
+      -
+    </app-label-text>
+  </div>
+  <div class="w-full max-w-prose">
+    <app-label-text label="Patient information">
+      -
+    </app-label-text>
+  </div>
+
+</div>
+<!-- Section content-->
+<div>
+    <!-- Medical Records Section -->
+    <app-section-accordion
+    title="Medical Records"
+    subtitle="No records"
+    emptyText="No records"
+    [isExpanded]="true"
+    [emptyFooter]="emptyMedicalRecordsTemplate">
+    </app-section-accordion>
+    <ng-template #emptyMedicalRecordsTemplate>
+    </ng-template>
+
+    <!-- Patient notes section -->
+<!--    <app-section-accordion-->
+<!--    title="Notes"-->
+<!--    subtitle="No notes found"-->
+<!--    emptyText="No notes found"-->
+<!--    [emptyFooter]="emptyNotesTemplate">-->
+<!--    </app-section-accordion>-->
+<!--    <ng-template #emptyNotesTemplate>-->
+<!--      <button nz-button nzType="primary">Create note</button>-->
+<!--    </ng-template>-->
+
+    <!-- Drugs section -->
+    <app-section-accordion title="Drugs" [subtitle]="data.summary.results? getDrugsSubtitle() :'No drugs found'">
+
+      <!-- General information section      -->
+      <app-section-accordion title="Information and Pillbox" [level]="2" [titleActionButton]="InfoPillboxPreview">
+        <form [formGroup]="dataForm" class="flex flex-col justify-start items-stretch gap-2">
+          <ng-container *ngFor="let drugInfoGroup of formGetArray('info').controls; let i = index">
+
+            <app-drug-info-card
+            [DrugInfoFormControl]="getFormGroup(drugInfoGroup)"
+            [drug_name]="drug_name"
+            [information]="information"
+            [pillbox]="pillbox"
+            />
+
+            <ng-template #drug_name>
+<!--              <input [formControl]="getFormControl(drugInfoGroup['controls']['drug_name'])"-->
+<!--              class="-->
+<!--              transition-colors-->
+<!--              w-full rounded-->
+<!--              border-0 focus:outline-0-->
+<!--              font-medium text-base-->
+<!--              px-2 -mx-2 py-1 -my-1-->
+<!--              bg-transparent-->
+<!--              ">-->
+
+              <span class="
+              transition-colors
+              font-medium text-base
+              ">{{getFormControl(drugInfoGroup['controls']['drug_name']).value}}</span>
+            </ng-template>
+
+            <ng-template #information>
+              <div class="grid grid-cols-4 gap-x-2 gap-y-1">
+                <app-label-field label="Drug" class="col-span-4" [formControlReference]="getFormControl(drugInfoGroup['controls']['drug_name'])" />
+                <app-label-field label="UOM" class="col-span-2">
+                  <nz-select [formControl]="getFormControl(drugInfoGroup['controls']['uom'])" class="w-full">
+                    <nz-option [nzValue]="MedicineUom.TABLET" [nzLabel]="MedicineUom.TABLET"></nz-option>
+                    <nz-option [nzValue]="MedicineUom.SYRUP" [nzLabel]="MedicineUom.SYRUP"></nz-option>
+                    <nz-option [nzValue]="MedicineUom.INJECTION" [nzLabel]="MedicineUom.INJECTION"></nz-option>
+                  </nz-select>
+                </app-label-field>
+                <app-label-field [label]="'Content/' + drugInfoGroup['controls']['uom']['value']"  class="col-span-2" [formControlReference]="getFormControl(drugInfoGroup['controls']['content_uom'])" />
+                <app-label-field label="Frequency" class="col-span-2" [formControlReference]="getFormControl(drugInfoGroup['controls']['frequency'])" />
+                <app-label-field label="Dosage"  class="col-span-2" [formControlReference]="getFormControl(drugInfoGroup['controls']['dosage'])" />
+                <app-label-field label="Instruction" class="col-span-4" [formControlReference]="getFormControl(drugInfoGroup['controls']['instruction'])" />
+                <app-label-field label="Condition" class="col-span-4" [formControlReference]="getFormControl(drugInfoGroup['controls']['condition'])" />
+              </div>
+            </ng-template>
+
+            <ng-template #pillbox>
+              <app-pillbox-field [uom]="drugInfoGroup['controls']['uom']['value']" [scheduleFormArray]="formExtractor.formGetArray(drugInfoGroup['controls']['schedule'])" class="h-full"/>
+            </ng-template>
+
+          </ng-container>
+        </form>
+      </app-section-accordion>
+      <ng-template #InfoPillboxPreview>
+        <button (click)="collapseOrExpandAllDrugCards($event)" class="
+        transition-all
+        border-none rounded p-0
+        bg-transparent text-nowrap cursor-pointer
+        text-syn-navy
+        opacity-50 md:hover:opacity-100
+        ">
+          <!-- Fall back to "Expand all" to match the default text upon refresh         -->
+          <span>{{getCollapseText() || "Expand all"}}</span>
+        </button>
+      </ng-template>
+
+      <!-- Form Summary Table Section     -->
+      <app-section-accordion title="Summary" [level]="2">
+        <app-table-wrapper>
+          <form [formGroup]="dataForm">
+            <nz-table [nzShowPagination]="false" [nzData]="data.summary.results || []">
+              <thead class="text-base font-normal">
+                <tr>
+                  <th>Drug</th>
+                  <th>Administration</th>
+                  <th>Common side effects</th>
+                  <th>Conditions</th>
+                  <th>Storage</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="summary">
+                <tr *ngFor="let drugSummaryGroup of formGetArray('summary').controls; let i = index" [formGroupName]="i">
+                  <td *ngFor="let key of Object.keys(drugSummaryGroup['controls']); let col=index" class="
+                  align-top
+                  {{col===0?'':'max-w-prose border-0 border-l border-solid border-gray-200 w-[22%]'}}
+                  ">
+                    <!-- https://stackoverflow.com/a/69077009 -->
+                    <!-- Lifesaver for auto text sizing -->
+                    <textarea [formControlName]="key" type="text" cdkTextareaAutosize class="
+                    text-base
+                    align-top
+                    resize-none
+                    border-0
+                    bg-transparent
+                    focus:outline-none
+                    mb-4 p-0
+                    overflow-hidden
+                    h-full w-full
+                    {{col===0?'font-semibold':'font-normal'}}
+                    ">
+                    </textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </form>
+        </app-table-wrapper>
+      </app-section-accordion>
+    </app-section-accordion>
+</div>
+

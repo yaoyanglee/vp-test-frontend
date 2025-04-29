@@ -1,0 +1,58 @@
+<div class="relative rounded-sm">
+  <div #tableContainer class="w-[40dvw] overflow-auto pb-4">
+    <table class="whitespace-nowrap border-collapse border-gray-100">
+      <thead
+      class="
+      [&>*>th]:pb-1 [&>*>th]:px-2
+      border-0 border-b-2 border-solid border-gray-200
+      ">
+      <tr>
+        <th>Patient ID</th>
+        <th>Item Description</th>
+        <th>Item Code</th>
+        <th>Quantity</th>
+        <th>UOM</th>
+        <th>Dosage Instruction</th>
+        <th>Frequency</th>
+        <th>Dispensed Duration</th>
+        <th>Dose</th>
+      </tr>
+      </thead>
+      <tbody class="[&>*>td]:px-2">
+      <tr *ngFor="let row of rows" class="
+      border-0 border-t border-solid border-gray-100
+      ">
+        <td>{{row.patient_id}}</td>
+        <td>{{row.item_description}}</td>
+        <td>{{row.item_code}}</td>
+        <td>{{row.quantity}}</td>
+        <td>{{row.uom}}</td>
+        <td>{{row.dosage_instruction}}</td>
+        <td>{{row.frequency}}</td>
+        <td>{{row.dispensed_duration}}</td>
+        <td>{{row.dose}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="
+  absolute top-0 bottom-4 left-0 w-[24px]
+  rounded-l-sm
+  pointer-events-none
+  transition-opacity
+  {{limitLeft?'opacity-0':'opacity-50'}}
+  bg-gradient-to-r from-gray-300 via-50% via-transparent  to-transparent
+  "></div>
+
+  <div class="
+  absolute top-0 bottom-4 right-0 w-[24px]
+  rounded-r-sm
+  pointer-events-none
+  transition-opacity
+  {{limitRight?'opacity-0':'opacity-50'}}
+  bg-gradient-to-l from-gray-300 via-50% via-transparent to-transparent
+  "></div>
+
+</div>

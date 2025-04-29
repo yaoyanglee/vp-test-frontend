@@ -1,0 +1,9 @@
+<section class = "mt-6 mb-10">
+    <div class = "w-full text-left border border-black-100 h-10 flex flex-row bg-[#e8eaff] rounded-md rounded-md hover:cursor-pointer items-center" (click)="changedExpanded()">
+        <h1 class = "ml-4 flex-auto text-[#0b0c5c] font-semibold pt-1">{{title}}<span class = "ml-8">{{subtitle}}</span></h1>
+        <span nz-icon [nzType]="!isExpanded ? 'right':'down'" nzTheme="outline" class = "text-xl mr-2 text-[#0b0c5c]"></span>
+    </div>
+    <div [class] = "isExpanded? '':'hidden'"><ng-content></ng-content></div>
+    
+    
+</section>

@@ -1,0 +1,15 @@
+<div class="
+rounded
+overflow-hidden
+border border-solid border-gray-300
+">
+  <ng-content></ng-content>
+
+  <ng-container *ngIf="isEmpty">
+    <div class="flex flex-col justify-center items-center py-16">
+      <nz-empty nzNotFoundContent="Patient queue is empty!"></nz-empty>
+    </div>
+  </ng-container>
+
+
+</div>

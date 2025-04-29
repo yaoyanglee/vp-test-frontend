@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .content-container {
+    @apply w-full max-w-full;
+    @apply flex flex-col justify-start items-stretch;
+    @apply px-2 md:px-4 lg:px-16;
+  }
+
+  .gutter-x {
+    @apply px-12
+  }
+
+  .gutter-y {
+    @apply py-12
+  }
+
+  .section-container {
+    @apply my-4 md:my-8
+  }
+}
+.preview-page div div.items-stretch{
+  width: 93vw;
+}

@@ -1,0 +1,63 @@
+<div *ngIf="data!=undefined"
+class="section-container
+">
+
+  <div class="md:grid md:grid-cols-3">
+    <div class="
+    md:col-start-2 md:col-span-1
+    w-full
+    flex flex-row justify-center items-center
+    gap-x-12
+    z-50 bg-white
+    ">
+
+      <!--    Decr date button-->
+      <button (click)="decrDayDelta()" nz-button nzType="default" class="text-gray-900 text-opacity-50">
+        <span nz-icon nzType="left" nzTheme="outline"></span>
+      </button>
+
+      <!--    Set date button-->
+      <button nz-popover
+      [nzPopoverContent]="setDateTemplate" nzPopoverTrigger="click"
+      class="
+      transition
+      border-none
+      bg-transparent
+      cursor-pointer
+      md:hover:bg-gray-50
+      rounded
+      ">
+        <div class="
+        flex flex-col justify-start items-center
+        w-[20ch]
+        ">
+          <span class="font-medium text-2xl text-gray-900">{{ dayDisplay }}</span>
+          <span class="font-light text-lg text-gray-900 opacity-60">{{ dateDisplay }}</span>
+        </div>
+      </button>
+
+      <!--    Template for date popover-->
+      <ng-template #setDateTemplate>
+        <div class="
+        max-w-screen
+        md:max-w-[50ch]
+        flex flex-col justify-start items-center
+        ">
+          <nz-calendar [(ngModel)]="dateOfInterest" [nzDisabledDate]="validateDate" [nzFullscreen]="false" (nzSelectChange)="setNewDate($event)"></nz-calendar>
+          <nz-divider class="m-0 pb-3"></nz-divider>
+          <button nz-button nzType="link" nzSize="large" (click)="setNewDate(today)">Today</button>
+        </div>
+      </ng-template>
+
+      <!--    Incr date button-->
+      <button (click)="incrDayDelta()" nz-button nzType="default" class="text-gray-900 text-opacity-50">
+        <span nz-icon nzType="right" nzTheme="outline"></span>
+      </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="currentDisplayData!=undefined">
+    <nz-divider></nz-divider>
+    <app-pillbox [data]="currentDisplayData"></app-pillbox>
+  </ng-container>
+</div>

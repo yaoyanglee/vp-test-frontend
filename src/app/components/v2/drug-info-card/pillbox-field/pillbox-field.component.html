@@ -1,0 +1,100 @@
+<div class="
+w-full
+text-left
+text-black
+border border-solid border-gray-200
+rounded border-collapse
+">
+  <table class="
+  w-full table-auto gap-0
+  ">
+    <thead class="rounded-t overflow-hidden w-full">
+      <tr class="border-0 border-solid border-b border-b-gray-200 bg-gray-50 w-full">
+        <th class="max-w-full w-[15ch] p-2">
+          <nz-select class="w-[15ch] max-w-full" [(ngModel)]="pillboxOption" (ngModelChange)="detectChangeInPillboxScheduleType()">
+            <ng-container *ngFor="let option of pillboxOptionChoices">
+              <nz-option [nzLabel]="option.charAt(0).toUpperCase() + option.slice(1) + ' schedule' " [nzValue]="option" />
+            </ng-container>
+          </nz-select>
+        </th>
+        <th *ngFor="let time of ['Morning', 'Afternoon', 'Evening']" class="px-4 text-sm font-medium border-0 border-solid border-l border-l-gray-200">{{ time }}</th>
+      </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="handleRowDrag($event)">
+    <tr cdkDrag *ngFor="let schedule of formExtractor.formGetArray(scheduleFormArray)['controls']; let i = index" [formGroup]="formExtractor.getFormGroup(schedule)"
+    class="
+    border-0 border-b last:border-b-0 border-solid border-b-gray-200
+    [&>td:first-child]:pl-4 [&>td:first-child]:pr-2
+    [&>td:last-child]:border-b-0
+    [&>td]:mb-2
+    ">
+      <td class="max-w-full group">
+        <div class="flex flex-row justify-between items-center">
+
+<!--          Label for the row -->
+          <span class="relative ml-2">
+            <span cdkDragHandle
+            class="
+            absolute left-0 transform -translate-x-full -ml-1
+            transition-all
+            cursor-grab
+            border-0 rounded-sm
+            text-gray-600
+            bg-gray-100
+            hidden
+            {{formExtractor.formGetArray(scheduleFormArray)['controls'].length>1?'group-hover:block':''}}
+            ">
+              <span nz-icon nzType="holder" nzTheme="outline"></span>
+            </span>
+            {{ getRowLabel(i) }}
+          </span>
+
+<!--          Switch case for which button to show-->
+          <ng-container [ngSwitch]="pillboxOption">
+
+<!--            Daily button-->
+            <button *ngSwitchCase="'daily'" (click)="deleteIndexOfSchedule(i)"
+            class="
+            transition-all
+            border-0 rounded
+            text-red-500
+            bg-red-50
+            md:hover:bg-red-100
+            hidden
+            {{formExtractor.formGetArray(scheduleFormArray)['controls'].length>1?'group-hover:block':''}}
+            ">
+              <span nz-icon nzType="delete" nzTheme="outline"></span>
+            </button>
+
+          </ng-container>
+        </div>
+      </td>
+      <td *ngFor="let field of Object.keys(schedule['controls'])" class="transition-colors bg-opacity-50 border-0 border-l border-solid border-gray-200 {{schedule['controls'][field]['value']>0?'':'bg-gray-200'}}">
+        <div class="flex flex-row justify-between items-center gap-2 p-4">
+          <input class="
+          border-0 focus:outline-none bg-transparent w-full
+          " type="number" min="0" [step]="1" [formControlName]="field" />
+          <span *ngIf="uom" class="opacity-50">{{uom}}(s)</span>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<button *ngIf="pillboxOption==='daily' && scheduleFormArray.controls.length<7" (click)="addDayToSchedule()"
+class="
+transition-all
+mt-2
+border-0 border-solid border-gray-200
+rounded
+bg-transparent
+px-2 py-1
+flex flex-row justify-start items-center
+gap-2
+text-gray-400
+cursor-pointer
+md:hover:bg-gray-50
+">
+  <span nz-icon nzType="plus" nzTheme="outline"></span>
+  <span>Add row</span>
+</button>

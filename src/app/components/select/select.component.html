@@ -1,0 +1,18 @@
+<div class="
+content-container
+h-full flex-grow
+flex flex-col justify-center items-center
+">
+  <nz-card nzTitle="Select patient ID" class="max-w-[50ch] w-full">
+    <div class="flex flex-col justify-center items-stretch gap-y-2">
+      <nz-input-group nzAddOnBefore="ID">
+        <nz-select nzSpaceItem nzAllowClear nzShowSearch [(ngModel)]="selectedProfile" nzPlaceHolder="Select" class="w-full">
+          <ng-container *ngFor="let profile of profiles.sort()">
+            <nz-option nzLabel="{{profile}}" nzValue="{{profile}}"></nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-input-group>
+      <button nzSpaceItem nz-button type="button" (click)="submit()" nzType="primary" class="w-full">View schedule</button>
+    </div>
+  </nz-card>
+</div>

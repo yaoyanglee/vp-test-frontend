@@ -1,0 +1,258 @@
+<!-- Modal for verification of printout -->
+<app-verify-modal />
+
+<div class="background-container">
+
+<div class="
+flex-grow
+flex flex-col justify-start items-start
+w-full
+overflow-hidden
+gap-y-3
+gutter-y
+">
+
+  <!--  Top section (page head)-->
+  <div class="gutter-x">
+    <h1 nz-typography style="font-size: 45px;">Visual Pillbox</h1>
+  </div>
+
+<!--  Card island-->
+
+  <!--  Patient queue info-->
+  <div class="
+  gutter-x
+  flex flex-row justify-start items-stretch
+  gap-3
+  ">
+    <nz-card class="bg-syn-purple rounded">
+      <div class="flex flex-col justify-start items-start gap-y-3">
+        <span class="text-syn-aqua text-xl font-light">Process Queue</span>
+        <span class="text-white text-5xl font-semibold">{{ patientQueue.length }}</span>
+      </div>
+    </nz-card>
+
+
+    <!--    Add patient card-->
+    <nz-card
+    nz-popover
+    [(nzPopoverVisible)]="addPatientPopupVisible"
+    nzPopoverTrigger="click"
+    [nzPopoverPlacement]="['rightTop', 'top', 'bottom']"
+    [nzPopoverContent]="addPatientTemplate"
+    tabindex="0"
+    class="
+    transition
+    cursor-pointer
+    bg-syn-lilac border-syn-purple rounded
+    flex flex-col justify-center items-center
+    md:hover:bg-opacity-50
+    ">
+      <div class="flex flex-col justify-center items-center gap-y-3 text-syn-purple">
+        <span nz-icon nzType="plus" nzTheme="outline" style="font-size: 36px"></span>
+        <span class="text-sm">Add patient to queue</span>
+      </div>
+    </nz-card>
+
+    <!--    Tabs for adding patient-->
+    <ng-template #addPatientTemplate>
+      <div class="flex flex-col justify-start items-stretch w-[45ch] gap-2">
+
+<!--        From Patient ID-->
+        <nz-tabset [nzAnimated]="false" [(nzSelectedIndex)]="currentTabIndex" (nzSelectChange)="patientTabChange($event)">
+          <nz-tab nzTitle="From Identifier">
+            <ng-template #patientRawData>
+              <app-patientid-raw [rows]="getFilteredRows(patientIdSelect)" />
+            </ng-template>
+            <nz-input-group nzAddOnBefore="ID">
+              <nz-select
+              nz-popover [nzPopoverPlacement]="['right']" [nzPopoverContent]="patientRawData"
+              [nzPopoverTrigger]="patientIdSelect?'hover':null" [(nzPopoverVisible)]="selectHoverPreview"
+              nzPlaceHolder="Patient" [nzAllowClear]="true" [(ngModel)]="patientIdSelect" (ngModelChange)="closeSelectPreviewOnOpen($event)"
+              nzDropdownClassName="p-0"
+              class="w-full [&>nz-option-item]:p-0">
+                <ng-container *ngFor="let patient of patientOptions">
+                  <ng-template #patientRawDataSpecific>
+                    <app-patientid-raw [rows]="getFilteredRows(patient)" />
+                  </ng-template>
+                  <nz-option [nzValue]="patient" [nzLabel]="patient" [nzCustomContent]="true">
+                    <span
+                    nz-popover [nzPopoverPlacement]="['right']" [nzPopoverContent]="patientRawDataSpecific"
+                    nzPopoverTrigger="hover"
+                    class="w-[100%] block"
+                    >
+                      {{patient}}
+                    </span>
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+            </nz-input-group>
+          </nz-tab>
+
+<!--          Upload image-->
+          <nz-tab nzTitle="From Image" >
+            <div class="flex flex-col justify-start items-stretch gap-2">
+              <nz-input-group nzAddOnBefore="ID" class="">
+                <input nz-input type="text" placeholder="Patient" [(ngModel)]="patientIdImage">
+              </nz-input-group>
+              <div (click)="uploadImageClick()" (dragover)="onDragOver($event)" (drop)="onDragDrop($event)"
+              class="
+              transition-colors
+              w-full
+              flex flex-col justify-center items-center
+              gap-4
+              py-6
+              border border-dashed border-syn-purple
+              rounded
+              bg-syn-lilac bg-opacity-25
+              cursor-pointer md:hover:bg-opacity-10
+              ">
+                <nz-empty [nzNotFoundContent]="null" />
+                <input #fileInputField (change)="onInputChange($event)" type="file" class="hidden" multiple accept="image/jpeg, image/png"/>
+                <div class="flex flex-col justify-center items-center gap-1 text-syn-navy">
+                  <span>Click or drag image here to upload</span>
+                  <span class="text-center text-xs font-light">Accepted file formats: .jpg, .jpeg, .png</span>
+                </div>
+              </div>
+              <div *ngIf="patientImageUploads.length" class="flex flex-col justify-start items-stretch gap-2">
+                <ng-container *ngFor="let file of patientImageUploads">
+                  <ng-template #imagePreview>
+                    <img [src]="getImageUrl(file)" alt="" class="max-w-[50dvw] max-h-[60dvh] h-[60dvh] rounded-sm">
+                  </ng-template>
+                  <div (click)="openImageInTab(file)"
+                  nz-popover [nzPopoverPlacement]="['rightBottom']" nzPopoverTrigger="hover" [nzPopoverContent]="imagePreview"
+                  class="
+                  group
+                  flex flex-row justify-between items-center
+                  p-2
+                  bg-gray-50 text-syn-navy
+                  rounded
+                  border border-solid border-gray-200
+                  cursor-pointer
+                  ">
+                    <span>{{file.name}}</span>
+                    <button (click)="deleteFileWithName(file.name)" class="
+                    cursor-pointer
+                    opacity-0 group-hover:opacity-100
+                    rounded bg-red-100
+                    text-red-500
+                    border-none focus:outline-none
+                    ">
+                      <span nz-icon nzType="delete" nzTheme="outline"></span>
+                    </button>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </nz-tab>
+        </nz-tabset>
+        <div class="flex flex-col justify-start items-stretch gap-2 w-full">
+<!--          <button nz-button nzType="default">Clear</button>-->
+          <button nz-button nzType="primary" [nzGhost]="!canSubmit()" (click)="addPatientToQueue()">Add patient to queue</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!--  Divider-->
+  <nz-divider></nz-divider>
+
+
+  <!--  Table and control elements-->
+  <div class="gutter-x w-full flex flex-col justify-start items-stretch gap-3">
+
+    <!--    Top row components-->
+    <div class="w-full flex flex-row justify-between items-center">
+      <div class="flex flex-row justify-start items-start gap-x-2">
+        <button nz-button nz-popover>
+          <span nz-icon nzType="profile" nzTheme="outline"></span>
+          Filter
+        </button>
+        <nz-input-group nzAddOnBeforeIcon="search" nzAddOnBefore=" Search" class="w-full">
+          <input nz-input placeholder="Patient ID" class="max-w-max w-[25ch]">
+        </nz-input-group>
+        <nz-select
+          nzPlaceHolder="Language"
+          class="max-w-[20ch]"
+          [(ngModel)]="selectedLanguage"
+          (ngModelChange)="onLanguageChange($event)">
+          <nz-option *ngFor="let language of languages" [nzValue]="language.value" [nzLabel]="language.label"></nz-option>
+        </nz-select>
+
+      </div>
+      <nz-pagination nzShowSizeChanger [nzTotal]="patientQueue.length" [nzPageSize]="50" [nzPageSizeOptions]="[50, 100, 150]"></nz-pagination>
+    </div>
+    
+
+    <app-table-wrapper [isEmpty]="patientQueue.length===0">
+      <nz-table #QueueTable nzTemplateMode [nzShowPagination]="false">
+
+        <!--      Table header-->
+        <thead>
+          <tr>
+            <th>Patient ID</th>
+            <th>Status</th>
+            <th>Time in queue</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <!-- Table body-->
+        <tbody>
+          <tr *ngFor="let data of patientQueue">
+
+            <!-- Patient Id-->
+            <td class="font-semibold">{{ data.id }}</td>
+
+            <!-- Data state (loading/etc.)-->
+            <td>
+              <div [ngSwitch]="data.status" class=" w-[6ch]">
+                <nz-tag *ngSwitchCase="PatientDataState.LOADING" nzColor="processing">
+                  <span nz-icon nzType="sync" nzSpin></span>
+                  <span>processing</span>
+                </nz-tag>
+                <nz-tag *ngSwitchCase="PatientDataState.ERROR" nzColor="error">
+                  <span nz-icon nzType="close-circle"></span>
+                  <span>error</span>
+                </nz-tag>
+                <nz-tag *ngSwitchCase="PatientDataState.READY" nzColor="success">
+                  <span nz-icon nzType="check-circle"></span>
+                  <span>success</span>
+                </nz-tag>
+              </div>
+            </td>
+
+            <!-- Time since added to queue-->
+            <td>
+              <app-moment-time-since [time]="data.startTime"></app-moment-time-since>
+            </td>
+
+            <!-- Action buttons-->
+            <td>
+              <div class="flex flex-row justify-start items-start gap-2">
+                <button nz-button nzType="primary" (click)="openModalForPatient(data.id)" [disabled]="data.status!==PatientDataState.READY">
+                  View
+                </button>
+                <a [href]="'/demo/v2/patient/'+data.id" [routerLink]="'/demo/v2/patient/'+data.id">
+                  <button nz-button nzType="default" [disabled]="data.status!==PatientDataState.READY">
+                    Edit
+                  </button>
+                </a>
+<!--                <app-source-button [patientId]="data.id"></app-source-button>-->
+                <button nz-button nzType="default" (click)="refreshPatientInQueue(data.id)" [disabled]="data.status!==PatientDataState.READY || data.source !== PatientSource.Identifier">
+                  <span nz-icon nzType="sync" nzTheme="outline"></span>
+                </button>
+                <button nz-button nzDanger (click)="deletePatientFromQueue(data.id)" [disabled]="data.status===PatientDataState.LOADING">
+                  <span nz-icon nzType="delete" nzTheme="outline"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </app-table-wrapper>
+
+  </div>
+
+</div>
+</div>

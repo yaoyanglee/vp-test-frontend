@@ -1,0 +1,13 @@
+.background-container {
+  background-image: url('/assets/img/grayblue.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+  padding: 50px;
+  min-height: 100vh; 
+  box-sizing: border-box;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}

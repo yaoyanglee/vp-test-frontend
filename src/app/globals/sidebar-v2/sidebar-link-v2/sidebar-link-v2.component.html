@@ -1,0 +1,20 @@
+<a [href]="routerLink" [routerLink]="routerLink">
+  <div class="
+  transition
+  py-2 -my-2
+  flex flex-row justify-start items-center
+  text-white text-xl
+  overflow-hidden
+  {{ isExpand?'gutter-x gap-x-3':'px-4'}}
+  {{ dummySize?'':'md:hover:bg-white md:hover:bg-opacity-10' }}
+  ">
+    <div class="opacity-50">
+      <ng-content select="[sidebar-icon]"></ng-content>
+    </div>
+    <div class="overflow-hidden">
+      <div class="{{isExpand?'max-w-[100dvw] ml-0 opacity-100':'max-w-0 -ml-[100%] opacity-0 -translate-x-full pointer-events-none select-none'}}">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</a>

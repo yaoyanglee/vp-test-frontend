@@ -1,0 +1,17 @@
+<div class="
+w-full flex flex-row justify-between items-start
+mb-2 mt-2
+">
+  <div class="flex flex-col justify-start items-start gap-2">
+    <span class="text-[12px] min-w-[20ch] font-medium">Medication Summary</span>
+    <div class="flex flex-col justify-start items-start text-[13px] min-w-[20ch] [&>span]:whitespace-nowrap">
+      <span>Patient Name</span>
+      <span>{{moment().format('DD MMMM YYYY, HH:mmA')}}</span>
+      <span class="font-barcode text-[28px]">{{patient.id}}</span>
+    </div>
+  </div>
+
+  <div>
+    <img src="/assets/legends/legend_icon_v1.svg" alt="" height="112">
+  </div>
+</div>

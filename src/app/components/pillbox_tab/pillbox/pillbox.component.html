@@ -1,0 +1,10 @@
+<div class="
+flex flex-col lg:flex-row justify-start items-stretch
+gap-4
+">
+  <nz-card *ngFor="let col of Object.keys(data).sort(TimeOfDaySort)" nzType="inner" class="w-full" [nzTitle]="col">
+    <div class="flex flex-col justify-start items-stretch gap-y-6 pt-4">
+      <app-drug-card *ngFor="let drug of data[col]" [drug]="drug"></app-drug-card>
+    </div>
+  </nz-card>
+</div>

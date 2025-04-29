@@ -1,0 +1,11 @@
+<div class="flex flex-col justify-start items-stretch w-full gap-1">
+  <label for="{{label}}{{discriminator}}" class="
+  text-xs font-base text-light text-syn-navy
+  ">{{label}}</label>
+
+  <input *ngIf="!children.children.length" nz-input type="text" id="{{label}}{{discriminator}}"  [formControl]="formControlReference" class="">
+
+  <div class="w-full" #children>
+    <ng-content/>
+  </div>
+</div>
