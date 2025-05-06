@@ -1,0 +1,19 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <!-- Crescent moon -->
+  <path d="M32,12 
+           A12,12 0 1,0 32,36 
+           A10,10 0 1,1 32,14 Z"></path>
+  <!-- Small star -->
+  <polygon points="
+       14,20
+       15.5,23
+       19,23
+       16,25
+       17,28
+       14,26
+       11,28
+       12,25
+       9,23
+       12.5,23
+     "></polygon>
+</svg>

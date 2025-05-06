@@ -1,0 +1,23 @@
+<div class="text-[16px] w-full">
+  <table class="w-full align-top text-left">
+    <thead class="
+    border-0 border-y border-solid border-black font-bold
+    [&>tr>th]:px-2 [&>tr>th:first-child]:pl-0 [&>tr>th:last-child]:pr-0
+    ">
+      <ng-container *ngTemplateOutlet="header" />
+    </thead>
+    <tbody class="
+    [&>tr]:border-0 [&>tr]:border-b [&>tr]:border-solid [&>tr]:border-black [&>tr]:border-opacity-30
+    [&>tr]:py-1
+    [&>tr]:align-top
+
+    [&>tr>td:first-child]:w-fit [&>tr>td]:whitespace-prewrap
+    [&>tr>td]:pt-1 [&>tr>td]:pb-1
+
+    [&>tr>td]:px-2 [&>tr>td:first-child]:pl-0 [&>tr>td:last-child]:pr-0
+    {{border?'[&>tr>td]:border-solid [&>tr>td]:border-l [&>tr>td]:border-0 [&>tr>td]:border-gray-200 [&>tr>td:first-child]:border-l-0':''}}
+    ">
+      <ng-container *ngTemplateOutlet="body" />
+    </tbody>
+  </table>
+</div>

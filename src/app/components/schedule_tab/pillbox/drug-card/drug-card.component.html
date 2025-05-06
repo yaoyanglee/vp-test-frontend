@@ -1,0 +1,48 @@
+<nz-card nzSize="small">
+  <div class="
+  flex flex-col justify-start items-start
+  text-gray-900
+  relative
+  ">
+    <app-drug-icon [uom]="drug.UOM"></app-drug-icon>
+    <div class="flex flex-row justify-between items-start w-full gap-1">
+      <div class="flex flex-row justify-start items-start gap-2">
+        <div class="flex flex-col justify-start items-start">
+          <span class="font-base text-lg">{{ drug.Drug }}</span>
+          <span class="font-light text-opacity-60 text-gray-900">
+            Take {{drug.Dose.toLowerCase()}} {{ drug.UOM.toLowerCase() }}{{ isPluralDose(drug.Dose, drug.UOM)?"s":"" }}
+          </span>
+        </div>
+      </div>
+      <button *ngIf="drug.Note || drug['Meal preference']" nz-button (click)="toggleExpand()" nzSize="small" nzType="text" class="aspect-square flex flex-row justify-center items-center">
+        <span class="transform transition-all opacity-50 {{ expanded?'':'-rotate-90' }}">
+          <span nz-icon nzType="down" nzTheme="outline"></span>
+        </span>
+      </button>
+    </div>
+
+
+
+    <div class="w-full overflow-hidden mt-2" *ngIf="drug.Note || drug['Meal preference']">
+      <div class="w-full flex flex-col gap-y-2 overflow-hidden transition-all duration-300 {{ expanded?'opacity-100':'opacity-0 -mt-[50%]'}}">
+        <nz-card nzSize="small" *ngIf="drug['Meal preference'] !== ''" class="bg-green-100 bg-opacity-20 text-green-900 text-opacity-90 font-light w-full">
+          <div class="flex flex-row justify-start items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-soup"><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M7 21h10"/><path d="M19.5 12 22 6"/><path d="M16.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.73 1.62"/><path d="M11.25 3c.27.1.8.53.74 1.36-.05.83-.93 1.2-.98 2.02-.06.78.33 1.24.72 1.62"/><path d="M6.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.74 1.62"/></svg>
+            <span class="first-letter:capitalize">
+              {{ drug["Meal preference"] }}.
+            </span>
+          </div>
+        </nz-card>
+        <nz-card nzSize="small" *ngIf="drug.Note" class="bg-red-100 bg-opacity-20 text-red-900 text-opacity-90 font-light w-full">
+          <div class="flex flex-row justify-start items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span class="">
+              {{ drug.Note }}
+            </span>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+
+  </div>
+</nz-card>

@@ -1,0 +1,16 @@
+
+<div class="flex flex-col justify-start items-stretch min-h-screen">
+
+<!--  Navbar (TOP) -->
+  <app-navbar class = "print:hidden"></app-navbar>
+  <div class="
+  flex-grow flex flex-col justify-start items-stretch
+  [&>*:last-child]:flex-grow
+  [&>*:last-child]:flex
+  [&>*:last-child]:flex-col">
+    <router-outlet></router-outlet>
+  </div>
+
+<!--  Footer -->
+  <app-footer class = "print:hidden"></app-footer>
+</div>

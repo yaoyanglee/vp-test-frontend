@@ -1,0 +1,50 @@
+
+<!--<nz-drawer-->
+<!--*ngIf="environment.PRODUCTION===false"-->
+<!--[nzVisible]="drawerVisible"-->
+<!--(nzOnClose)="closeSideDrawer()"-->
+<!--&gt;-->
+<!--  <div *nzDrawerContent class="-->
+<!--  overflow-y-scroll-->
+<!--  ">-->
+<!--    <div class="-->
+<!--    flex flex-col justify-start items-stretch-->
+<!--    gap-2-->
+<!--    ">-->
+<!--      <div *ngFor="let sse of sseMessages.reverse()" class="-->
+<!--      flex flex-col justify-start items-start w-full-->
+<!--      rounded p-2-->
+<!--      border border-gray-200 border-solid-->
+<!--      bg-gray-100-->
+<!--      gap-2-->
+<!--      ">-->
+<!--        <span class="font-medium">{{sse.patientId}}</span>-->
+<!--        <span class="">{{sse.message}}</span>-->
+<!--        <span class="text-xs font-light text-opacity-50">{{moment(sse.time).format("dddd, Do MMM yyyy, HH:mm")}}</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nz-drawer>-->
+
+
+
+<div class="
+gutter-x
+py-4 gap-6
+bg-white
+w-full
+flex flex-row justify-end items-center
+">
+  <img src="/assets/img/ktph-logo.svg" alt="" class="" height="48">
+  <img src="/assets/img/synapxeLogo.png" alt="" class="mt-2" height="39">
+<!--  <div>-->
+<!--    <button *ngIf="environment.PRODUCTION===false" (click)="openSideDrawer()" class = "border-transparent hover:cursor-pointer bg-white text-xl text-blue-500 font-thick">-->
+<!--      <span nz-icon nzType="menu" nzTheme="outline"></span>-->
+<!--    </button>-->
+<!--  </div>-->
+
+</div>
+
+
+
+

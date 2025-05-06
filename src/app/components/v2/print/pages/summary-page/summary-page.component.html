@@ -1,0 +1,27 @@
+<ng-container *ngFor="let _ of patientData2D; let pageIndex=index">
+  <app-paper appPaper [portrait]="false" class="preview-page">
+    <app-page-section [name]="sectionLabel">
+      <app-page-table-parent [header]="header" [body]="body"/>
+
+      <ng-template #header>
+        <tr>
+          <th>{{headings.item}}</th>
+          <th>{{headings.conditions}}</th>
+          <th>{{headings.administration}}</th>
+          <th>{{headings.side_effects}}</th>
+          <th>{{headings.storage}}</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body>
+        <tr *ngFor="let drug of patientData2D[pageIndex]" class="">
+          <td class="text-[16px] max-w-[15ch]">{{drug.drug_name}}</td>
+          <td class="text-[16px] max-w-[10ch]">{{drug.Conditions}}</td>
+          <td class="text-[16px] max-w-[20ch]">{{drug.Administration}}</td>
+          <td class="text-[16px] max-w-[25ch]">{{drug['Common side effects']}}</td>
+          <td class="text-[16px] max-w-[35ch]">{{drug.Storage}}</td>
+        </tr>
+      </ng-template>
+    </app-page-section>
+  </app-paper>
+</ng-container>

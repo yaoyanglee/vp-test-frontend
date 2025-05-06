@@ -1,0 +1,37 @@
+<ng-template #source>
+  <div class="flex flex-col justify-start items-stretch gap-2" *ngIf="sourceData?.images.length>0">
+    <div *ngFor="let file of sourceData.images">
+      <ng-template #imagePreview>
+        <img [src]="file.url" alt="" class="max-w-[50dvw] max-h-[60dvh] h-[60dvh] rounded-sm">
+      </ng-template>
+      <div (click)="openImageInTab(file.url)"
+      nz-popover [nzPopoverPlacement]="['leftBottom','leftTop']" nzPopoverTrigger="hover" [nzPopoverContent]="imagePreview"
+      class="
+      group
+      flex flex-row justify-between items-center
+      p-2
+      bg-gray-50 text-syn-navy
+      rounded
+      border border-solid border-gray-200
+      cursor-pointer
+      ">
+        <span class="max-w-[40ch] truncate">{{file.filename}}</span>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="sourceData?.rows.length>0">
+    <app-patientid-raw [rows]="sourceData.rows"></app-patientid-raw>
+  </ng-container>
+
+  <ng-container *ngIf="!sourceData">
+    Empty!
+  </ng-container>
+</ng-template>
+
+<button nz-button nzType="default"
+nz-popover nzPopoverTrigger="hover" [nzPopoverArrowPointAtCenter]="false"
+[nzPopoverPlacement]="['bottomRight', 'topRight']"
+[nzPopoverContent]="source">
+  Source
+</button>

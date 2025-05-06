@@ -1,0 +1,66 @@
+<section class="
+{{level===1?'gutter-x my-6':''}}
+">
+
+    <!--    Top bar content-->
+    <div (click)="changedExpanded()" class="
+    w-full px-4 py-2
+    flex flex-row justify-start items-center gap-6
+    rounded
+    cursor-pointer
+    {{level===1?'bg-syn-navy text-syn-lilac z-40':''}}
+    {{level===2?'bg-syn-lilac text-syn-navy border border-solid border-syn-navy':''}}
+    ">
+
+        <!-- Left side of top bar -->
+        <div class="
+        w-full
+        flex flex-row justify-start items-center
+        gap-x-6
+        ">
+          <span class="text-lg font-semibold">{{title}}</span>
+          <span *ngIf="subtitle" class="text-lg font-light opacity-70">({{ subtitle }})</span>
+        </div>
+
+        <!-- Title action button    -->
+        <div class="transition-all {{isExpanded?'opacity-100':'opacity-0 pointer-events-none'}}">
+          <ng-container *ngTemplateOutlet="titleActionButton"></ng-container>
+        </div>
+
+
+        <!-- icon of top bar -->
+        <div tabindex="0"  class="transform transition cursor-pointer flex flex-row justify-center items-center duration-150 {{isExpanded?'':'-rotate-90'}}">
+          <span nz-icon nzType="down" style="font-size: 24px" nzTheme="outline"></span>
+        </div>
+    </div>
+
+    <!--  Child content-->
+    <div class="overflow-hidden">
+      <div class="
+      transition-all
+      flex flex-col justify-start items-stretch
+      gap-2
+      overflow-hidden pt-2
+      {{isExpanded?'duration-150 mt-0 opacity-100 max-h-[1000dvh]':'duration-500 max-h-0 -mt-[100%] -mb-[100%] opacity-0 -translate-y-full pointer-events-none select-none'}}">
+        <ng-container *ngIf="!forceEmpty">
+          <ng-content></ng-content>
+        </ng-container>
+
+        <!-- https://stackoverflow.com/a/60172547 -->
+        <div class="w-full {{ forceEmpty?'':'hidden only-child:block' }}">
+          <div class="
+          w-full flex flex-col justify-center items-center gap-3
+          p-8 rounded
+          border-3 border-dashed border-syn-sky
+          bg-syn-lilac bg-opacity-25
+          text-black text-opacity-60
+          ">
+            <nz-empty [nzNotFoundContent]="emptyText" [nzNotFoundFooter]="emptyContent"></nz-empty>
+            <ng-template #emptyContent>
+              <ng-container *ngTemplateOutlet="emptyFooter"></ng-container>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
