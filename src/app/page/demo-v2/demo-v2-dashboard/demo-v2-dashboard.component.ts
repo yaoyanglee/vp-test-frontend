@@ -168,15 +168,9 @@ export class DemoV2DashboardComponent implements OnInit{
   canSubmit():boolean {
 
     switch(this.currentTabIndex){
-<<<<<<< HEAD
       case 0:
         return this.patientIdSelect !== "" && this.patientIdSelect!==null;
       case 1:
-=======
-      // case 0:
-      //   return this.patientIdSelect !== "" && this.patientIdSelect!==null;
-      case 0:
->>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
         return this.patientImageUploads.length>0 && this.patientIdImage!==""
       default:
         return false
@@ -202,7 +196,6 @@ export class DemoV2DashboardComponent implements OnInit{
   }
 
   /**
-<<<<<<< HEAD
    * ADD DOCUMENTS
    */
 
@@ -223,13 +216,6 @@ export class DemoV2DashboardComponent implements OnInit{
           this.patientDataService.addImageToQueue(this.patientIdImage, this.patientImageUploads)
         }
         break;
-=======
-   * ADD PATIENTS
-   */
-  addPatientToQueue(): void {
-    if (this.currentTabIndex === 0 && this.patientIdImage && this.patientImageUploads.length) {
-      this.patientDataService.addImageToQueue(this.patientIdImage, this.patientImageUploads);
->>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
     }
   }
 
