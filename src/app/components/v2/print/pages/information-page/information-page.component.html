@@ -6,7 +6,6 @@
     <ng-template #header>
       <tr>
         <th>{{headings.item}}</th>
-        <th>{{headings.conditions}}</th>
         <th>{{headings.frequency}}</th>
         <th>{{headings.dosage}}</th>
         <th>{{headings.instructions}}</th>
@@ -14,16 +13,15 @@
     </ng-template>
     <ng-template #body>
       <tr *ngFor="let info of patient.summary.info">
-        <td  class="min-w-[12ch] max-w-[10ch]">
+        <td  class="min-w-[20ch] max-w-[20ch]">
           <div class="flex flex-col justify-start items-start">
             <span class="text-[16px] w-full">{{info.drug_name}}</span>
             <span class="text-[14px] font-extralight w-full">({{info["content/uom"]}}/{{info.uom}})</span>
           </div>
         </td>
-        <td class="max-w-[10ch]">{{info.condition}}</td>
-        <td class="max-w-[20ch]">{{info.frequency}}</td>
-        <td class="max-w-[10ch]">{{info.dosage}}</td>
-        <td class="max-w-[30ch]">{{info.instruction}}</td>
+        <td class="max-w-[20ch]">{{refineAndTranslateFrequency(info.frequency)}}</td>
+        <td class="max-w-[10ch]">{{translateDosage(info.dosage)}}</td>
+        <td class="max-w-[30ch]">{{translateInstructions(info.instruction)}}</td>
       </tr>
     </ng-template>
   </app-page-section>

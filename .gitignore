@@ -12,6 +12,7 @@ src/environments/environment.ts
 /tmp
 /out-tsc
 /bazel-out
+/.angular
 
 # Node
 /node_modules

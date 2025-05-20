@@ -147,7 +147,7 @@ export class PillboxPageComponent implements OnInit{
     let max:number = 0
 
     drugInfo.schedule.forEach(day => {
-      max = Math.max(max, day.morning, day.afternoon, day.evening)
+      max = Math.max(max, day.morning, day.afternoon, day.evening, day.night)
     })
 
     return max
@@ -160,7 +160,7 @@ export class PillboxPageComponent implements OnInit{
   private addRows(){
 
     const sortedRows:DrugInfo[] = this.patientData.info.sort((a, b) => {
-      const targetOrder = [MedicineUom.TABLET, MedicineUom.SYRUP, MedicineUom.INJECTION]
+      const targetOrder = [MedicineUom.TABLET, MedicineUom.CAPSULE, MedicineUom.SYRUP, MedicineUom.INJECTION]
 
       return targetOrder.indexOf(a.uom) - targetOrder.indexOf(b.uom)
     })

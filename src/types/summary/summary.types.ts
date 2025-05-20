@@ -3,7 +3,8 @@ import {MedicineUom} from "../v2/medicine.types";
 export type DrugInfoSchedule = {
   morning: number,
   afternoon: number,
-  evening: number
+  evening: number,
+  night: number
 }
 
 

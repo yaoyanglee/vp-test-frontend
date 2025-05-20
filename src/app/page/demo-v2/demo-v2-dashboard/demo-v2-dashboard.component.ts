@@ -196,8 +196,14 @@ export class DemoV2DashboardComponent implements OnInit{
   }
 
   /**
-   * ADD PATIENTS
+   * ADD DOCUMENTS
    */
+
+  // addPatientToQueue(): void {
+  //   if (this.currentTabIndex === 0 && this.patientIdImage && this.patientImageUploads.length) {
+  //     this.patientDataService.addImageToQueue(this.patientIdImage, this.patientImageUploads);
+  //   }
+  // }
   addPatientToQueue():void {
     switch (this.currentTabIndex) {
       case 0:
@@ -206,8 +212,6 @@ export class DemoV2DashboardComponent implements OnInit{
         }
         break;
       case 1:
-        console.log(this.patientImageUploads)
-        console.log(this.patientIdImage)
         if(this.patientIdImage && this.patientImageUploads.length){
           this.patientDataService.addImageToQueue(this.patientIdImage, this.patientImageUploads)
         }
@@ -232,7 +236,7 @@ export class DemoV2DashboardComponent implements OnInit{
   onInputChange(event: Event){
     const element = event.target as HTMLInputElement
     this.patientImageUploads.push(...Array.from(element.files)
-      .filter(file => file.type==='image/jpeg' || file.type==='image/png')
+      .filter(file => file.type==='image/jpeg' || file.type==='image/png' || file.type==='application/pdf')
       .filter(file => !this.patientImageUploads.map(_file=>_file.name).includes(file.name))
     )
   }
@@ -247,7 +251,7 @@ export class DemoV2DashboardComponent implements OnInit{
     event.stopPropagation()
 
     this.patientImageUploads.push(...Array.from(event.dataTransfer.files)
-      .filter(file => file.type==='image/jpeg' || file.type==='image/png')
+      .filter(file => file.type==='image/jpeg' || file.type==='image/png' || file.type==='application/pdf')
       .filter(file => !this.patientImageUploads.map(_file=>_file.name).includes(file.name))
     )
 
@@ -265,6 +269,8 @@ export class DemoV2DashboardComponent implements OnInit{
     return this.patientDataRows.filter(row => row.patient_id===patientId)
   }
 
+
+  
   /**
    * API CALL METHODS
    */

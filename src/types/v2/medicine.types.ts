@@ -1,7 +1,18 @@
 
 
 export enum MedicineUom {
-  TABLET = "Tablet",
+  BOTTLE = "Bottle",
+  CAPSULE = "Capsule",
+  DROP = "Drop",
+  INJECTION = "Injection",
+  INHALER = "Inhaler",
+  LOTION = "Lotion",
+  OINTMENT = "Ointment",
+  PACKET = "Packet",
+  SC = "SC",
   SYRUP = "Syrup",
-  INJECTION = "Injection"
+  TABLET = "Tablet",
+  TAG = "Tag",
+  TUBE = "Tube",
+  POWDER = "Powder"
 }

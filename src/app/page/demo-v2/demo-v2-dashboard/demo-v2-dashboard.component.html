@@ -50,17 +50,17 @@ gutter-y
     ">
       <div class="flex flex-col justify-center items-center gap-y-3 text-syn-purple">
         <span nz-icon nzType="plus" nzTheme="outline" style="font-size: 36px"></span>
-        <span class="text-sm">Add patient to queue</span>
+        <span class="text-sm">Add document to queue</span>
       </div>
     </nz-card>
 
-    <!--    Tabs for adding patient-->
+    <!--  Tabs for adding records -->
     <ng-template #addPatientTemplate>
       <div class="flex flex-col justify-start items-stretch w-[45ch] gap-2">
 
-<!--        From Patient ID-->
+    <!--  Pre-Upload -->
         <nz-tabset [nzAnimated]="false" [(nzSelectedIndex)]="currentTabIndex" (nzSelectChange)="patientTabChange($event)">
-          <nz-tab nzTitle="From Identifier">
+          <nz-tab nzTitle="Select Pre-Uploaded">
             <ng-template #patientRawData>
               <app-patientid-raw [rows]="getFilteredRows(patientIdSelect)" />
             </ng-template>
@@ -68,7 +68,7 @@ gutter-y
               <nz-select
               nz-popover [nzPopoverPlacement]="['right']" [nzPopoverContent]="patientRawData"
               [nzPopoverTrigger]="patientIdSelect?'hover':null" [(nzPopoverVisible)]="selectHoverPreview"
-              nzPlaceHolder="Patient" [nzAllowClear]="true" [(ngModel)]="patientIdSelect" (ngModelChange)="closeSelectPreviewOnOpen($event)"
+              nzPlaceHolder="Document" [nzAllowClear]="true" [(ngModel)]="patientIdSelect" (ngModelChange)="closeSelectPreviewOnOpen($event)"
               nzDropdownClassName="p-0"
               class="w-full [&>nz-option-item]:p-0">
                 <ng-container *ngFor="let patient of patientOptions">
@@ -76,11 +76,7 @@ gutter-y
                     <app-patientid-raw [rows]="getFilteredRows(patient)" />
                   </ng-template>
                   <nz-option [nzValue]="patient" [nzLabel]="patient" [nzCustomContent]="true">
-                    <span
-                    nz-popover [nzPopoverPlacement]="['right']" [nzPopoverContent]="patientRawDataSpecific"
-                    nzPopoverTrigger="hover"
-                    class="w-[100%] block"
-                    >
+                    <span>
                       {{patient}}
                     </span>
                   </nz-option>
@@ -90,10 +86,10 @@ gutter-y
           </nz-tab>
 
 <!--          Upload image-->
-          <nz-tab nzTitle="From Image" >
+          <nz-tab nzTitle="Create New Upload" >
             <div class="flex flex-col justify-start items-stretch gap-2">
               <nz-input-group nzAddOnBefore="ID" class="">
-                <input nz-input type="text" placeholder="Patient" [(ngModel)]="patientIdImage">
+                <input nz-input type="text" placeholder="Document" [(ngModel)]="patientIdImage">
               </nz-input-group>
               <div (click)="uploadImageClick()" (dragover)="onDragOver($event)" (drop)="onDragDrop($event)"
               class="
@@ -108,10 +104,10 @@ gutter-y
               cursor-pointer md:hover:bg-opacity-10
               ">
                 <nz-empty [nzNotFoundContent]="null" />
-                <input #fileInputField (change)="onInputChange($event)" type="file" class="hidden" multiple accept="image/jpeg, image/png"/>
+                <input #fileInputField (change)="onInputChange($event)" type="file" class="hidden" multiple accept="image/jpeg, image/png, application/pdf"/>
                 <div class="flex flex-col justify-center items-center gap-1 text-syn-navy">
-                  <span>Click or drag image here to upload</span>
-                  <span class="text-center text-xs font-light">Accepted file formats: .jpg, .jpeg, .png</span>
+                  <span>Click or drag file(s) here to upload</span>
+                  <span class="text-center text-xs font-light">Accepted file formats: .jpg, .jpeg, .png, .pdf</span>
                 </div>
               </div>
               <div *ngIf="patientImageUploads.length" class="flex flex-col justify-start items-stretch gap-2">
@@ -148,7 +144,7 @@ gutter-y
         </nz-tabset>
         <div class="flex flex-col justify-start items-stretch gap-2 w-full">
 <!--          <button nz-button nzType="default">Clear</button>-->
-          <button nz-button nzType="primary" [nzGhost]="!canSubmit()" (click)="addPatientToQueue()">Add patient to queue</button>
+          <button nz-button nzType="primary" [nzGhost]="!canSubmit()" (click)="addPatientToQueue()">Add document to queue</button>
         </div>
       </div>
     </ng-template>
@@ -169,7 +165,7 @@ gutter-y
           Filter
         </button>
         <nz-input-group nzAddOnBeforeIcon="search" nzAddOnBefore=" Search" class="w-full">
-          <input nz-input placeholder="Patient ID" class="max-w-max w-[25ch]">
+          <input nz-input placeholder="Document ID" class="max-w-max w-[25ch]">
         </nz-input-group>
         <nz-select
           nzPlaceHolder="Language"
@@ -190,7 +186,7 @@ gutter-y
         <!--      Table header-->
         <thead>
           <tr>
-            <th>Patient ID</th>
+            <th>Doc ID</th>
             <th>Status</th>
             <th>Time in queue</th>
             <th>Action</th>
