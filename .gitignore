@@ -1,16 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-<<<<<<< HEAD
-=======
-__pycache__/
-archive/
-history/
-images/
-static/
-testing_data.csv
-config.prop
-
->>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
 # Sensitive information
 **/envionment.*.ts
 **/envionment.ts
