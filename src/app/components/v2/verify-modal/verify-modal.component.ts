@@ -113,10 +113,17 @@ export class VerifyModalComponent implements OnInit, AfterViewInit, AfterContent
     console.log("closing!")
     this.modalIsVisible = false
     this.pdfDoc = undefined
+<<<<<<< HEAD
     // document.body.removeChild(this.pdfIFrame)
     this.cdr.detectChanges()
     this.zoomLevel = 100;
     // this.applyZoom(this.zoomLevel / 100);
+=======
+    document.body.removeChild(this.pdfIFrame)
+    this.cdr.detectChanges()
+    this.zoomLevel = 100;
+    this.applyZoom(this.zoomLevel / 100);
+>>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
   }
 
   pillboxModeOnChange(e:PillboxIconMode){

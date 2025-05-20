@@ -54,6 +54,7 @@ gutter-y
       </div>
     </nz-card>
 
+<<<<<<< HEAD
     <!--  Tabs for adding records -->
     <ng-template #addPatientTemplate>
       <div class="flex flex-col justify-start items-stretch w-[45ch] gap-2">
@@ -61,6 +62,15 @@ gutter-y
     <!--  Pre-Upload -->
         <nz-tabset [nzAnimated]="false" [(nzSelectedIndex)]="currentTabIndex" (nzSelectChange)="patientTabChange($event)">
           <nz-tab nzTitle="Select Pre-Uploaded">
+=======
+    <!--    Tabs for adding patient-->
+    <ng-template #addPatientTemplate>
+      <div class="flex flex-col justify-start items-stretch w-[45ch] gap-2">
+
+<!--        From Patient ID-->
+        <nz-tabset [nzAnimated]="false" [(nzSelectedIndex)]="currentTabIndex" (nzSelectChange)="patientTabChange($event)">
+          <!-- <nz-tab nzTitle="From Identifier">
+>>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
             <ng-template #patientRawData>
               <app-patientid-raw [rows]="getFilteredRows(patientIdSelect)" />
             </ng-template>
@@ -76,17 +86,32 @@ gutter-y
                     <app-patientid-raw [rows]="getFilteredRows(patient)" />
                   </ng-template>
                   <nz-option [nzValue]="patient" [nzLabel]="patient" [nzCustomContent]="true">
+<<<<<<< HEAD
                     <span>
+=======
+                    <span
+                    nz-popover [nzPopoverPlacement]="['right']" [nzPopoverContent]="patientRawDataSpecific"
+                    nzPopoverTrigger="hover"
+                    class="w-[100%] block"
+                    >
+>>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
                       {{patient}}
                     </span>
                   </nz-option>
                 </ng-container>
               </nz-select>
             </nz-input-group>
+<<<<<<< HEAD
           </nz-tab>
 
 <!--          Upload image-->
           <nz-tab nzTitle="Create New Upload" >
+=======
+          </nz-tab> -->
+
+<!--          Upload image-->
+          <nz-tab nzTitle="From File" >
+>>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
             <div class="flex flex-col justify-start items-stretch gap-2">
               <nz-input-group nzAddOnBefore="ID" class="">
                 <input nz-input type="text" placeholder="Document" [(ngModel)]="patientIdImage">

@@ -30,6 +30,7 @@ export class InformationPageComponent implements OnChanges {
   @Input() patient!: Patient
   selectedLanguage: string = 'en'; // Default language
   sectionLabel: string = 'Medication'; // Default section label
+<<<<<<< HEAD
   
   qualifierMap: Record<string, Record<string, string>> = {
     'with meal': {
@@ -172,6 +173,9 @@ export class InformationPageComponent implements OnChanges {
       ta: 'தேவையானபோது'
     }
   };
+=======
+
+>>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
   headings: any = {
     item: 'Item',
     conditions: 'Medical Conditions',
@@ -246,6 +250,7 @@ export class InformationPageComponent implements OnChanges {
       this.sectionLabel = 'Medication';
     }
   }
+<<<<<<< HEAD
   translatePRN(lang: string): string {
     const prnMap: Record<string, string> = {
       en: 'as needed',
@@ -315,3 +320,6 @@ export class InformationPageComponent implements OnChanges {
     return translated;
   }
   }
+=======
+}
+>>>>>>> b4bbb4dd47a0254c8dde27dbb5d19471d2e4a5c8
