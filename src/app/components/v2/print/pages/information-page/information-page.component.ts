@@ -57,6 +57,7 @@ export class InformationPageComponent implements OnChanges {
       ta: 'உணவுக்குப் பிறகு'
     }
   };
+
   dosageTranslationMap: Record<string, Record<string, string>> = {
     'injection': {
       en: 'Injection',
@@ -105,11 +106,23 @@ export class InformationPageComponent implements OnChanges {
       ms: 'Lozeng',
       zh: '含片',
       ta: 'தொண்டை மாத்திரை'
+    },
+    'application': { 
+      en: 'Application',
+      ms: 'Aplikasi',     
+      zh: '应用',        
+      ta: 'பயன்பாடு'  
     }
   };
 
   frequencyTranslationMap: Record<string, Record<string, string>> = {
     'OD': {
+      en: 'Once a day',
+      ms: 'Sekali sehari',
+      zh: '每天一次',
+      ta: 'ஒரு நாள் ஒருமுறை'
+    },
+    'ONCE': {
       en: 'Once a day',
       ms: 'Sekali sehari',
       zh: '每天一次',
@@ -144,8 +157,24 @@ export class InformationPageComponent implements OnChanges {
       ms: 'Sekali waktu malam',
       zh: '晚上一次',
       ta: 'இரவில் ஒரு முறை'
-    }
+    },
+    'Q8H': {
+      en: 'Every 8 hours',
+      ms: 'Setiap 8 jam',
+      zh: '每8小时一次',
+      ta: 'ஒவ்வொரு 8 மணி நேரத்திற்கும் ஒருமுறை'
+    },
+    'Q24H': { 
+      en: 'Every 24 hours', 
+      ms: 'Setiap 24 jam', 
+      zh: '每24小时一次', 
+      ta: 'ஒவ்வொரு 24 மணி நேரத்திற்கும் ஒருமுறை' 
+    },
+    'Q4H': { en: 'Every 4 hours', ms: 'Setiap 4 jam', zh: '每4小时一次', ta: 'ஒவ்வொரு 4 மணி நேரத்திற்கும் ஒருமுறை' },
+    'Q6H': { en: 'Every 6 hours', ms: 'Setiap 6 jam', zh: '每6小时一次', ta: 'ஒவ்வொரு 6 மணி நேரத்திற்கும் ஒருமுறை' },
+    'Q12H': { en: 'Every 12 hours', ms: 'Setiap 12 jam', zh: '每12小时一次', ta: 'ஒவ்வொரு 12 மணி நேரத்திற்கும் ஒருமுறை' }
   };
+
   instructionTranslationMap: Record<string, Record<string, string>> = {
     'start on': {
       en: 'Start on',
@@ -159,6 +188,12 @@ export class InformationPageComponent implements OnChanges {
       zh: '饭前服用',
       ta: 'உணவிற்கு முன் எடுத்துக்கொள்ளவும்'
     },
+    'pre-meal': { 
+      en: 'Take before meal', 
+      ms: 'Ambil sebelum makan', 
+      zh: '饭前服用',           
+      ta: 'உணவிற்கு முன் எடுத்துக்கொள்ளவும்' 
+    },
     'take after meals': {
       en: 'Take after meals',
       ms: 'Ambil selepas makan',
@@ -170,8 +205,15 @@ export class InformationPageComponent implements OnChanges {
       ms: 'Apabila diperlukan',
       zh: '如有需要时',
       ta: 'தேவையானபோது'
+    },
+    'take on': { 
+      en: 'Take on',
+      ms: 'Ambil pada',      
+      zh: '服用于',          
+      ta: 'எடுத்துக்கொள்ளவும்' 
     }
   };
+
   headings: any = {
     item: 'Item',
     conditions: 'Medical Conditions',
@@ -246,6 +288,7 @@ export class InformationPageComponent implements OnChanges {
       this.sectionLabel = 'Medication';
     }
   }
+
   translatePRN(lang: string): string {
     const prnMap: Record<string, string> = {
       en: 'as needed',
@@ -256,62 +299,113 @@ export class InformationPageComponent implements OnChanges {
     return prnMap[lang] || 'as needed';
   }
 
-
   refineAndTranslateFrequency(freq: string): string {
     const lang = this.selectedLanguage || 'en';
-    const upperFreq = freq?.toUpperCase?.() ?? '';
+    // Ensure freq is a string before calling toUpperCase and other string methods
+    const upperFreq = typeof freq === 'string' ? freq.toUpperCase().trim() : '';
 
-    const prnMatch = upperFreq.includes('PRN');
-    const freqMatch = upperFreq.match(/^([A-Z]+)(?:\s*\(([^)]+)\))?/);
-
-    if (!freqMatch) return freq;
-
-    const base = freqMatch[1]; 
-    const qualifierRaw = freqMatch[2]?.toLowerCase?.().trim();
-
-    const baseTranslation = this.frequencyTranslationMap[base]?.[lang] || base;
-
-    let qualifierTranslation = '';
-    if (qualifierRaw && this.qualifierMap[qualifierRaw]) {
-      qualifierTranslation = this.qualifierMap[qualifierRaw]?.[lang] ?? `(${qualifierRaw})`;
+    if (!upperFreq) {
+        return freq || ''; // Return original null/undefined or empty string
     }
 
-    const parts: string[] = [baseTranslation];
-    if (qualifierTranslation) parts.push(`(${qualifierTranslation})`);
-    if (prnMatch) parts.push(`(${this.translatePRN(lang)})`);
+    const prnMatch = upperFreq.includes('PRN'); // Detect PRN presence anywhere
 
-    return parts.join(' ');
+    // 1. Handle if the entire input is just "PRN"
+    if (upperFreq === 'PRN') {
+        return `(${this.translatePRN(lang)})`;
+    }
+
+    // 2. Try to match a base code (alphanumeric) and an optional qualifier in parentheses
+    const freqMatchResult = upperFreq.match(/^([A-Z0-9]+)(?:\s*\(([^)]+)\))?/);
+
+    if (!freqMatchResult) {
+        // No standard base code matched (e.g., "As directed", "Take with food PRN")
+        // Following your original logic, if no base code is matched, the original frequency is returned.
+        // The PRN suffix (e.g., "(as needed)") is NOT appended in this case by your original structure.
+        // If `freq` was "As directed PRN", it returns "As directed PRN".
+        return freq;
+    }
+
+    // A base code was matched
+    const base = freqMatchResult[1]; // e.g., "Q8H", "OD"
+    const qualifierRaw = freqMatchResult[2]?.toLowerCase?.().trim(); // Content within parentheses
+
+    // 3. Handle if the matched base code itself is "PRN" (e.g., from an input like "PRN (IF PAIN)")
+    if (base === 'PRN') {
+        const basePRNTranslation = `(${this.translatePRN(lang)})`;
+        let qualifierDisplay = '';
+        if (qualifierRaw) {
+            const translatedQualifier = this.qualifierMap[qualifierRaw]?.[lang];
+            qualifierDisplay = translatedQualifier ? `(${translatedQualifier})` : `(${qualifierRaw})`;
+        }
+        // This case fully handles "PRN" as a base, so the later prnMatch append is effectively skipped.
+        return [basePRNTranslation, qualifierDisplay].filter(Boolean).join(' ').trim();
+    }
+
+    // 4. Regular base code translation (OD, Q8H, etc.)
+    const baseTranslation = this.frequencyTranslationMap[base]?.[lang] || base;
+
+    const parts: string[] = [baseTranslation];
+
+    if (qualifierRaw) {
+        const translatedQualifier = this.qualifierMap[qualifierRaw]?.[lang];
+        if (translatedQualifier) {
+            parts.push(`(${translatedQualifier})`);
+        } else {
+            // If qualifier is not in the map, use the raw qualifier text, wrapped in parentheses
+            parts.push(`(${qualifierRaw})`);
+        }
+    }
+
+    // 5. Append PRN translation if:
+    //    - PRN was detected in the original string (`prnMatch` is true)
+    //    - AND the base code handled was NOT "PRN" itself (which is covered in step 3).
+    // This part is only reached if `freqMatchResult` was successful and base was not 'PRN'.
+    if (prnMatch && base !== 'PRN') {
+        parts.push(`(${this.translatePRN(lang)})`);
+    }
+
+    return parts.join(' ').trim();
   }
+
   translateDosage(dosage: string): string {
     if (!dosage) return dosage;
 
     const lang = this.selectedLanguage || 'en';
-    let translated = dosage;
+    let translated = dosage; // Start with the original dosage string
 
+    // Iterate over known dosage forms/keywords to translate them
     for (const keyword in this.dosageTranslationMap) {
-      const regex = new RegExp(`\\b${keyword}\\b`, 'gi'); 
+      // Use a regex to match whole words to avoid partial matches (e.g., 'in' in 'injection')
+      // \b denotes a word boundary
+      const regex = new RegExp(`\\b${keyword}\\b`, 'gi'); // 'g' for global, 'i' for case-insensitive
       const translation = this.dosageTranslationMap[keyword]?.[lang];
-      if (translation) {
+      if (translation && regex.test(translated)) { // Check if keyword exists before replacing
         translated = translated.replace(regex, translation);
       }
     }
-
     return translated;
   }
+
   translateInstructions(instruction: string): string {
     if (!instruction) return instruction;
 
     const lang = this.selectedLanguage || 'en';
     let translated = instruction;
 
-    for (const phrase in this.instructionTranslationMap) {
-      const regex = new RegExp(phrase, 'gi');
+    // Sort keys by length descending to match longer phrases first
+    const sortedInstructionKeys = Object.keys(this.instructionTranslationMap).sort((a, b) => b.length - a.length);
+
+    for (const phrase of sortedInstructionKeys) {
+      // Escape special regex characters in the phrase if any (though your current keys are simple)
+      const escapedPhrase = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedPhrase, 'gi'); // 'g' for global, 'i' for case-insensitive
       const translation = this.instructionTranslationMap[phrase]?.[lang];
-      if (translation) {
+      if (translation && regex.test(translated)) {
         translated = translated.replace(regex, translation);
       }
     }
-
     return translated;
   }
-  }
+}
+  

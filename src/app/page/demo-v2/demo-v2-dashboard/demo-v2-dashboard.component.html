@@ -175,6 +175,15 @@ gutter-y
           <nz-option *ngFor="let language of languages" [nzValue]="language.value" [nzLabel]="language.label"></nz-option>
         </nz-select>
 
+        <!-- New Simplicity Level Dropdown -->
+        <nz-select
+          nzPlaceHolder="Simplicity"
+          class="max-w-[20ch]"
+          [(ngModel)]="selectedSimplicityLevel"
+          (ngModelChange)="onSimplicityLevelChange($event)">
+          <nz-option *ngFor="let level of simplicityLevels" [nzValue]="level.value" [nzLabel]="level.label"></nz-option>
+        </nz-select>
+
       </div>
       <nz-pagination nzShowSizeChanger [nzTotal]="patientQueue.length" [nzPageSize]="50" [nzPageSizeOptions]="[50, 100, 150]"></nz-pagination>
     </div>

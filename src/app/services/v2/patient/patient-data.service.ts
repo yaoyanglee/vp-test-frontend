@@ -22,11 +22,17 @@ export class PatientDataService implements OnDestroy{
 
   patientRawData:PatientRaw[]
 
-  private selectedLanguage: string = ''; // Add this property to store the selected language
+  private selectedLanguage: string = ''; 
+  private selectedSimplicityLevel: string = 'Normal';
 
   // Method to set the selected language
   setLanguage(language: string) {
     this.selectedLanguage = language;
+  }
+
+    // Method to set the selected simplicity level
+  setSimplicityLevel(level: string) {
+    this.selectedSimplicityLevel = level;
   }
 
   /**
@@ -172,7 +178,8 @@ export class PatientDataService implements OnDestroy{
     //const res = await axios.get<PatientData>(`${environment.BACKEND2}/api/v3/get-patient-info/${patientId}`)
     const res = await axios.get<PatientData>(`${environment.BACKEND2}/api/v3/get-patient-info/${patientId}`, {
       params: {
-        language: this.selectedLanguage
+        language: this.selectedLanguage,
+        simplicity: this.selectedSimplicityLevel
       }
     });
     return res.data
@@ -231,7 +238,8 @@ export class PatientDataService implements OnDestroy{
     //const res = await axios.post(`${environment.BACKEND2}/api/v3/from-image/${patientId}`, formData)
     const res = await axios.post(`${environment.BACKEND2}/api/v3/from-image/${patientId}`, formData, {
       params: {
-        language: this.selectedLanguage
+        language: this.selectedLanguage,
+        simplicity: this.selectedSimplicityLevel
       }
     });
     

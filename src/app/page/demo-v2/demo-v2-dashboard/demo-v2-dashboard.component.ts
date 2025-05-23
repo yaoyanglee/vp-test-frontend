@@ -35,6 +35,7 @@ import {SourceButtonComponent} from "../../../components/v2/source-button/source
 import { HttpClient } from '@angular/common/http';
 
 import { LanguageService } from '../../../services/language.service';
+import { SimplicityLevelService, SimplicityLevel } from '../../../services/simplicity-level.service';
 
 
 @Component({
@@ -108,6 +109,13 @@ export class DemoV2DashboardComponent implements OnInit{
     { value: 'ta', label: 'Tamil' }
   ];
 
+  // Properties for Simplicity Level
+  selectedSimplicityLevel: SimplicityLevel = 'Normal'; // Default value
+  simplicityLevels = [
+    { value: 'Normal' as SimplicityLevel, label: 'Normal' },
+    { value: 'Simplified' as SimplicityLevel, label: 'Simplified' }
+  ];
+
   /**
    * CONSTRUCTOR
    */
@@ -115,6 +123,7 @@ export class DemoV2DashboardComponent implements OnInit{
     private patientDataService: PatientDataService,
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
+    private simplicityLevelService: SimplicityLevelService, 
     private http: HttpClient
   ) {}
 
@@ -138,6 +147,10 @@ export class DemoV2DashboardComponent implements OnInit{
     this.languageService.currentLanguage.subscribe(language => {
       this.selectedLanguage = language;
     });
+
+    this.simplicityLevelService.currentSimplicityLevel.subscribe(level => {
+      this.selectedSimplicityLevel = level;
+    });
   }
 
   onLanguageChange(selectedLanguage: string) {
@@ -151,6 +164,17 @@ export class DemoV2DashboardComponent implements OnInit{
     this.languageService.changeLanguage(this.selectedLanguage);
   }
   
+  onSimplicityLevelChange(selectedLevel: SimplicityLevel) {
+    this.selectedSimplicityLevel = selectedLevel;
+    console.log('Selected Simplicity:', this.selectedSimplicityLevel);
+
+    // Update patient data service with the selected simplicity level
+    this.patientDataService.setSimplicityLevel(this.selectedSimplicityLevel);
+
+    // Notify the simplicity level service of the change
+    this.simplicityLevelService.changeSimplicityLevel(this.selectedSimplicityLevel);
+
+  }
 
   /******************************/
   /* Cosmetic live updates
